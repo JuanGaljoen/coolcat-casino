@@ -18,6 +18,11 @@ const {
   ogType = 'website',
   jsonLd,
 } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+const navLinks = [
+  { href: '/slots', label: 'Slot Reviews' },
+];
 ---
 
 <!doctype html>
@@ -58,12 +63,37 @@ const {
   </head>
   <body class="bg-white text-gray-900">
 
+    <!-- Responsible gambling top bar -->
+    <div class="bg-gray-900 text-gray-400 text-xs py-1.5 text-center">
+      18+ only &bull; Please gamble responsibly &bull;
+      <a href="https://www.begambleaware.org" rel="noopener noreferrer" target="_blank" class="underline underline-offset-2 hover:text-white transition-colors">BeGambleAware.org</a>
+    </div>
+
     <!-- Nav -->
-    <header class="border-b border-gray-200">
-      <div class="mx-auto max-w-[1100px] px-4 sm:px-6 flex items-center h-14">
-        <a href="/" class="text-lg font-semibold tracking-tight hover:opacity-75 transition-opacity">
-          CoolCat
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="mx-auto max-w-[1100px] px-4 sm:px-6 flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-2 group" aria-label="CoolCat home">
+          <span class="text-xl font-bold tracking-tight" style="color: var(--color-accent);">CoolCat</span>
+          <span class="text-sm font-normal text-gray-500 hidden sm:inline">Casino Reviews</span>
         </a>
+
+        <!-- Nav links -->
+        <nav aria-label="Main navigation">
+          <ul class="flex items-center gap-6 text-sm font-medium">
+            {navLinks.map(({ href, label }) => (
+              <li>
+                <a
+                  href={href}
+                  class={`transition-colors hover:text-gray-900 ${currentPath.startsWith(href) ? 'text-gray-900 border-b-2 pb-0.5' : 'text-gray-500'}`}
+                  style={currentPath.startsWith(href) ? 'border-color: var(--color-accent);' : ''}
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </header>
 
@@ -73,13 +103,30 @@ const {
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-gray-200 mt-16">
-      <div class="mx-auto max-w-[1100px] px-4 sm:px-6 py-8 text-sm text-gray-500">
-        <p>
-          This site contains affiliate links. We may earn a commission at no extra cost to you.
-          Content is intended for adults 18+. Please gamble responsibly.
-        </p>
-        <p class="mt-2">&copy; {new Date().getFullYear()} CoolCat Casino Reviews. All rights reserved.</p>
+    <footer class="bg-gray-900 text-gray-400 mt-20">
+      <div class="mx-auto max-w-[1100px] px-4 sm:px-6 py-12">
+        <div class="flex flex-col sm:flex-row justify-between gap-8">
+          <div class="max-w-sm">
+            <p class="text-white font-semibold mb-2" style="color: var(--color-accent);">CoolCat Casino Reviews</p>
+            <p class="text-sm leading-relaxed">
+              Independent slot machine reviews with verified RTP data. We never accept payment for positive reviews.
+            </p>
+          </div>
+          <div class="text-sm">
+            <p class="text-white font-medium mb-3">Quick Links</p>
+            <ul class="space-y-2">
+              <li><a href="/slots" class="hover:text-white transition-colors">Slot Reviews</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 mt-8 pt-8 text-xs text-gray-500 space-y-2">
+          <p>
+            This site contains affiliate links. We may earn a commission at no extra cost to you.
+            Content is intended for adults 18+.
+          </p>
+          <p>&copy; {new Date().getFullYear()} CoolCat Casino Reviews. All rights reserved.</p>
+        </div>
       </div>
     </footer>
 

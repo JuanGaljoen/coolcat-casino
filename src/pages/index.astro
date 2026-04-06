@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SlotCard from '../components/SlotCard.astro';
+import TeamSection from '../components/TeamSection.astro';
 import { getFeaturedSlots } from '../lib/sanity';
 
 const featured = await getFeaturedSlots(6);
@@ -11,21 +12,62 @@ const featured = await getFeaturedSlots(6);
   description="Independent slot machine reviews with real RTP data, volatility ratings, and bonus feature analysis. No fluff, just facts."
   canonical={new URL('/', Astro.site).href}
 >
+
   <!-- Hero -->
-  <section class="py-10 border-b border-gray-200 mb-10">
-    <h1 class="text-4xl font-semibold leading-tight tracking-tight">
-      Honest Slot Reviews,<br />Verified RTP
-    </h1>
-    <p class="mt-4 text-lg text-gray-500 max-w-prose">
-      Independent analysis of slot machines — real RTP figures, volatility ratings, and bonus mechanics. No sponsorships, no fluff.
-    </p>
+  <section class="relative -mx-4 sm:-mx-6 mb-14" style="background-color: var(--color-accent-light);">
+    <div class="mx-auto max-w-[1100px] px-4 sm:px-6 py-16 sm:py-20">
+      <div class="max-w-2xl">
+        <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--color-accent);">
+          Independent · Verified · No fluff
+        </p>
+        <h1 class="text-4xl sm:text-5xl font-bold leading-tight tracking-tight text-gray-900">
+          Honest Slot Reviews,<br />Verified RTP
+        </h1>
+        <p class="mt-5 text-lg text-gray-600 leading-relaxed max-w-xl">
+          Our analysts play every slot and verify RTP figures before publishing. Real data, no sponsored rankings.
+        </p>
+        <a
+          href="/slots"
+          class="inline-block mt-7 px-6 py-3 rounded-lg text-white font-semibold text-sm transition-opacity hover:opacity-90"
+          style="background-color: var(--color-accent);"
+        >
+          Browse All Reviews →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust strip -->
+  <section class="-mx-4 sm:-mx-6 mb-14">
+    <div class="mx-auto max-w-[1100px] px-4 sm:px-6">
+      <div class="grid grid-cols-3 gap-4 border border-gray-200 rounded-xl divide-x divide-gray-200 bg-white">
+        {[
+          { stat: '50+', label: 'Slots reviewed' },
+          { stat: '4', label: 'Expert analysts' },
+          { stat: '100%', label: 'Independent verdicts' },
+        ].map(({ stat, label }) => (
+          <div class="px-6 py-5 text-center">
+            <p class="text-2xl font-bold" style="color: var(--color-accent);">{stat}</p>
+            <p class="text-xs text-gray-500 mt-1 font-medium">{label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   </section>
 
   <!-- Top Rated Slots -->
   <section>
-    <h2 class="text-xl font-semibold mb-6">Top Rated Slots</h2>
+    <div class="flex items-baseline justify-between mb-6">
+      <h2 class="text-2xl font-semibold">Top Rated Slots</h2>
+      <a
+        href="/slots"
+        class="text-sm font-medium transition-colors hover:opacity-75"
+        style="color: var(--color-accent);"
+      >
+        View all →
+      </a>
+    </div>
 
-    <!-- Break out of the 740px BaseLayout constraint for the grid -->
     <div class="-mx-4 sm:-mx-6">
       <div class="mx-auto max-w-[1100px] px-4 sm:px-6">
         {featured.length > 0 ? (
@@ -39,15 +81,9 @@ const featured = await getFeaturedSlots(6);
         )}
       </div>
     </div>
-
-    <div class="mt-8">
-      <a
-        href="/slots"
-        class="text-sm font-medium hover:underline underline-offset-2"
-        style="color: var(--color-accent);"
-      >
-        View all slot reviews →
-      </a>
-    </div>
   </section>
+
+  <!-- Meet the team -->
+  <TeamSection />
+
 </BaseLayout>

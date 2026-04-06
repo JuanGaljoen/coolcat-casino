@@ -2,6 +2,8 @@
 
 :root {
   --color-accent: #E5622A;
+  --color-accent-light: #fdf0ea;
+  --color-surface: #f8f8f6;
 }
 
 *,
@@ -32,3 +34,12 @@ video {
 a {
   color: inherit;
 }
+
+/* Portable Text body styles */
+.review-body h2 { font-size: 1.25rem; font-weight: 600; margin: 2rem 0 0.75rem; }
+.review-body h3 { font-size: 1.1rem;  font-weight: 600; margin: 1.5rem 0 0.5rem; }
+.review-body p  { margin: 0 0 1rem; color: #374151; }
+.review-body ul, .review-body ol { margin: 0 0 1rem 1.25rem; color: #374151; }
+.review-body li { margin-bottom: 0.25rem; }
+.review-body a  { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+.review-body strong { font-weight: 600; }

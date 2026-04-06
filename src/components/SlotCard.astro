@@ -14,9 +14,10 @@ const { review } = Astro.props;
 const imageUrl = urlFor(review.heroImage.asset).width(600).height(340).fit('crop').url();
 ---
 
-<article class="flex flex-col rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-  <!-- Hero image -->
-  <a href={`/slots/${review.slug.current}`} tabindex="-1" aria-hidden="true">
+<article class="flex flex-col rounded-xl border border-gray-200 bg-white overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+
+  <!-- Image with score badge overlay -->
+  <a href={`/slots/${review.slug.current}`} class="relative block" tabindex="-1" aria-hidden="true">
     <Image
       src={imageUrl}
       alt={review.heroImage.alt ?? review.title}
@@ -24,10 +25,15 @@ const imageUrl = urlFor(review.heroImage.asset).width(600).height(340).fit('crop
       height={340}
       class="w-full object-cover aspect-[16/9]"
     />
+    <!-- Score badge -->
+    <div class="absolute top-3 right-3 flex items-center justify-center w-11 h-11 rounded-full text-white text-sm font-bold shadow-md" style="background-color: var(--color-accent);">
+      {review.rating.toFixed(1)}
+    </div>
   </a>
 
   <!-- Card body -->
-  <div class="flex flex-col flex-1 p-4 gap-3">
+  <div class="flex flex-col flex-1 p-5 gap-3">
+
     <!-- Title + provider -->
     <div>
       <h2 class="text-base font-semibold leading-snug">
@@ -35,27 +41,29 @@ const imageUrl = urlFor(review.heroImage.asset).width(600).height(340).fit('crop
           {review.title}
         </a>
       </h2>
-      <p class="text-xs text-gray-500 mt-0.5">{review.provider}</p>
+      <p class="text-xs text-gray-400 mt-0.5 font-medium uppercase tracking-wide">{review.provider}</p>
     </div>
 
-    <!-- Rating + volatility -->
+    <!-- Stars + volatility -->
     <div class="flex items-center gap-2 flex-wrap">
       <RatingStars rating={review.rating} />
       <VolatilityBadge volatility={review.volatility} />
     </div>
 
     <!-- RTP -->
-    <p class="text-sm text-gray-700">
-      RTP: <span class="font-medium">{review.rtp.toFixed(2)}%</span>
-    </p>
+    <div class="flex items-center gap-1.5 text-sm">
+      <span class="text-gray-400">RTP</span>
+      <span class="font-semibold text-gray-900">{review.rtp.toFixed(2)}%</span>
+    </div>
 
     <!-- Verdict -->
-    <p class="text-sm text-gray-600 line-clamp-1 flex-1">{review.verdict}</p>
+    <p class="text-sm text-gray-500 line-clamp-2 flex-1">{review.verdict}</p>
 
     <!-- CTA -->
     <a
       href={`/slots/${review.slug.current}`}
-      class="mt-auto inline-block text-center text-sm font-medium rounded-md border border-gray-300 px-4 py-2 hover:bg-gray-50 transition-colors"
+      class="mt-2 block text-center text-sm font-semibold rounded-lg px-4 py-2.5 text-white transition-opacity hover:opacity-90"
+      style="background-color: var(--color-accent);"
     >
       Read Review
     </a>
