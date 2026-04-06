@@ -1,0 +1,196 @@
+---
+import VolatilityBadge from './VolatilityBadge.astro';
+import RatingStars from './RatingStars.astro';
+import type { SlotReview } from '../types';
+
+interface Props {
+  slots: SlotReview[];
+}
+
+const { slots } = Astro.props;
+
+// Serialise data for the client-side sort script
+const tableData = slots.map((s) => ({
+  id: s._id,
+  rtp: s.rtp,
+  rating: s.rating,
+}));
+---
+
+<div class="overflow-x-auto rounded-lg border border-gray-200">
+  <table
+    id="comparison-table"
+    class="w-full text-sm border-collapse"
+    aria-label="Slot comparison table"
+  >
+    <thead class="bg-white sticky top-0 z-10 shadow-[0_1px_0_0_#e5e7eb]">
+      <tr>
+        <th
+          scope="col"
+          class="px-4 py-3 text-left font-semibold text-gray-700"
+        >
+          Slot
+        </th>
+        <th
+          scope="col"
+          class="px-4 py-3 text-left font-semibold text-gray-700 hidden sm:table-cell"
+        >
+          Provider
+        </th>
+        <th
+          scope="col"
+          data-col="rtp"
+          aria-sort="none"
+          class="px-4 py-3 text-left font-semibold text-gray-700 cursor-pointer select-none whitespace-nowrap hover:bg-gray-50"
+        >
+          RTP
+          <span class="sort-icon ml-1 text-gray-400">↕</span>
+        </th>
+        <th
+          scope="col"
+          class="px-4 py-3 text-left font-semibold text-gray-700 hidden sm:table-cell"
+        >
+          Volatility
+        </th>
+        <th
+          scope="col"
+          class="px-4 py-3 text-left font-semibold text-gray-700 hidden sm:table-cell whitespace-nowrap"
+        >
+          Max Win
+        </th>
+        <th
+          scope="col"
+          data-col="rating"
+          aria-sort="descending"
+          class="px-4 py-3 text-left font-semibold text-gray-700 cursor-pointer select-none hover:bg-gray-50"
+        >
+          Rating
+          <span class="sort-icon ml-1 text-gray-400">↓</span>
+        </th>
+        <th
+          scope="col"
+          class="px-4 py-3 text-left font-semibold text-gray-700"
+        >
+          Play
+        </th>
+      </tr>
+    </thead>
+    <tbody id="comparison-tbody">
+      {slots.map((s) => (
+        <tr
+          data-id={s._id}
+          data-rtp={s.rtp}
+          data-rating={s.rating}
+          class="border-t border-gray-200 hover:bg-gray-50 transition-colors"
+        >
+          <!-- Slot name -->
+          <td class="px-4 py-3 font-medium">
+            <a
+              href={`/slots/${s.slug.current}`}
+              class="hover:underline underline-offset-2"
+              style="color: var(--color-accent);"
+            >
+              {s.title}
+            </a>
+          </td>
+
+          <!-- Provider — hidden on mobile -->
+          <td class="px-4 py-3 text-gray-600 hidden sm:table-cell">
+            {s.provider}
+          </td>
+
+          <!-- RTP -->
+          <td class="px-4 py-3 text-gray-900 tabular-nums">
+            {s.rtp.toFixed(2)}%
+          </td>
+
+          <!-- Volatility — hidden on mobile -->
+          <td class="px-4 py-3 hidden sm:table-cell">
+            <VolatilityBadge volatility={s.volatility} />
+          </td>
+
+          <!-- Max Win — hidden on mobile -->
+          <td class="px-4 py-3 text-gray-900 tabular-nums hidden sm:table-cell">
+            {new Intl.NumberFormat('en-GB').format(s.maxWin)}x
+          </td>
+
+          <!-- Rating -->
+          <td class="px-4 py-3">
+            <RatingStars rating={s.rating} />
+          </td>
+
+          <!-- Play button -->
+          <td class="px-4 py-3">
+            <a
+              href={s.affiliateUrl}
+              rel="nofollow noopener sponsored"
+              target="_blank"
+              class="inline-block rounded-md px-3 py-1.5 text-xs font-semibold text-white whitespace-nowrap transition-opacity hover:opacity-90"
+              style="background-color: var(--color-accent);"
+            >
+              Play Now
+            </a>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<script is:inline define:vars={{ tableData }}>
+  (function () {
+    /** @type {{ col: 'rtp'|'rating', dir: 'asc'|'desc' }} */
+    let state = { col: 'rating', dir: 'desc' };
+
+    const tbody = document.getElementById('comparison-tbody');
+    const table = document.getElementById('comparison-table');
+    if (!tbody || !table) return;
+
+    const sortableHeaders = table.querySelectorAll('th[data-col]');
+
+    function getVal(row, col) {
+      return parseFloat(row.dataset[col] ?? '0');
+    }
+
+    function sortRows() {
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      rows.sort((a, b) => {
+        const diff = getVal(a, state.col) - getVal(b, state.col);
+        return state.dir === 'asc' ? diff : -diff;
+      });
+      rows.forEach((row) => tbody.appendChild(row));
+    }
+
+    function updateHeaders() {
+      sortableHeaders.forEach((th) => {
+        const col = th.dataset.col;
+        const icon = th.querySelector('.sort-icon');
+        if (col === state.col) {
+          th.setAttribute('aria-sort', state.dir === 'asc' ? 'ascending' : 'descending');
+          if (icon) icon.textContent = state.dir === 'asc' ? '↑' : '↓';
+        } else {
+          th.setAttribute('aria-sort', 'none');
+          if (icon) icon.textContent = '↕';
+        }
+      });
+    }
+
+    sortableHeaders.forEach((th) => {
+      th.addEventListener('click', () => {
+        const col = th.dataset.col;
+        if (state.col === col) {
+          state.dir = state.dir === 'asc' ? 'desc' : 'asc';
+        } else {
+          state.col = col;
+          state.dir = 'desc';
+        }
+        sortRows();
+        updateHeaders();
+      });
+    });
+
+    // Apply default sort on load
+    sortRows();
+    updateHeaders();
+  })();
+</script>

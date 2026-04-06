@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SlotCard from '../../components/SlotCard.astro';
+import ComparisonTable from '../../components/ComparisonTable.astro';
 import { getAllSlots } from '../../lib/sanity';
 
 const slots = await getAllSlots();
@@ -14,7 +15,7 @@ const description = `Expert slot machine reviews with verified RTP, volatility r
 ---
 
 <BaseLayout {title} {description}>
-  <div class="space-y-10">
+  <div class="space-y-12">
     <header>
       <h1 class="text-3xl font-semibold">Slot Machine Reviews</h1>
       <p class="mt-2 text-gray-500 text-sm">
@@ -23,15 +24,30 @@ const description = `Expert slot machine reviews with verified RTP, volatility r
     </header>
 
     {slots.length > 0 ? (
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {slots.map((slot) => (
-          <SlotCard review={slot} />
-        ))}
-      </div>
+      <>
+        <!-- Card grid — break out to 1100px -->
+        <div class="-mx-4 sm:-mx-6">
+          <div class="mx-auto max-w-[1100px] px-4 sm:px-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {slots.map((slot) => (
+                <SlotCard review={slot} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparison table -->
+        <section>
+          <h2 class="text-xl font-semibold mb-4">Compare All Slots</h2>
+          <div class="-mx-4 sm:-mx-6">
+            <div class="mx-auto max-w-[1100px] px-4 sm:px-6">
+              <ComparisonTable slots={slots} />
+            </div>
+          </div>
+        </section>
+      </>
     ) : (
       <p class="text-gray-500">No reviews published yet. Check back soon.</p>
     )}
-
-    <!-- ComparisonTable goes here -->
   </div>
 </BaseLayout>
