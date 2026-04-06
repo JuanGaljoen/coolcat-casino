@@ -1,0 +1,25 @@
+---
+interface Props {
+  volatility: 'low' | 'medium' | 'high' | 'very-high';
+}
+
+const { volatility } = Astro.props;
+
+const styles = {
+  low:       'bg-green-100 text-green-800',
+  medium:    'bg-amber-100 text-amber-800',
+  high:      'bg-orange-100 text-orange-800',
+  'very-high': 'bg-red-100 text-red-800',
+} as const;
+
+const labels = {
+  low:       'Low',
+  medium:    'Medium',
+  high:      'High',
+  'very-high': 'Very High',
+} as const;
+---
+
+<span class={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${styles[volatility]}`}>
+  {labels[volatility]}
+</span>

@@ -1,0 +1,38 @@
+---
+import VolatilityBadge from './VolatilityBadge.astro';
+import type { SlotReview } from '../types';
+
+interface Props {
+  slot: SlotReview;
+}
+
+const { slot } = Astro.props;
+
+const fmt = (value: number) =>
+  new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(value);
+
+const rows = [
+  { label: 'RTP',        value: `${slot.rtp.toFixed(2)}%` },
+  { label: 'Min Bet',    value: fmt(slot.minBet) },
+  { label: 'Max Bet',    value: fmt(slot.maxBet) },
+  { label: 'Max Win',    value: `${new Intl.NumberFormat('en-GB').format(slot.maxWin)}x` },
+  { label: 'Provider',   value: slot.provider },
+];
+---
+
+<table class="w-full text-sm border-collapse">
+  <tbody>
+    <tr class="border-t border-gray-200">
+      <th class="py-2.5 pr-4 text-left font-medium text-gray-500 w-2/5">Volatility</th>
+      <td class="py-2.5 text-gray-900">
+        <VolatilityBadge volatility={slot.volatility} />
+      </td>
+    </tr>
+    {rows.map(({ label, value }) => (
+      <tr class="border-t border-gray-200">
+        <th class="py-2.5 pr-4 text-left font-medium text-gray-500 w-2/5">{label}</th>
+        <td class="py-2.5 text-gray-900">{value}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
