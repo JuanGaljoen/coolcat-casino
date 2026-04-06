@@ -6,9 +6,14 @@ import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
+  site: process.env.SITE_URL ?? 'https://coolcatcasino.com',
   output: 'static',
   adapter: vercel(),
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/studio'),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

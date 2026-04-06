@@ -36,8 +36,8 @@ const volatilityLabel: Record<string, string> = {
   'very-high': 'Very High',
 };
 
-const pageTitle       = `${review.title} Review (${year}) — RTP ${review.rtp.toFixed(2)}%, ${volatilityLabel[review.volatility]} Volatility | CoolCat`;
-const canonicalUrl    = `${Astro.site ?? ''}slots/${slug}`;
+const pageTitle    = `${review.title} Review (${year}) — RTP ${review.rtp.toFixed(2)}%, ${volatilityLabel[review.volatility]} Volatility | CoolCat`;
+const canonicalUrl = new URL(`/slots/${slug}`, Astro.site).href;
 
 const bodyHtml = toHTML(review.body as Parameters<typeof toHTML>[0]);
 

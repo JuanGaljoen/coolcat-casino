@@ -14,7 +14,7 @@ const title = `Online Slot Reviews (${year}) — RTP, Ratings & Expert Analysis 
 const description = `Expert slot machine reviews with verified RTP, volatility ratings and bonus feature breakdowns. Updated ${month} ${year}.`;
 ---
 
-<BaseLayout {title} {description}>
+<BaseLayout {title} {description} canonical={new URL('/slots', Astro.site).href}>
   <div class="space-y-12">
     <header>
       <h1 class="text-3xl font-semibold">Slot Machine Reviews</h1>

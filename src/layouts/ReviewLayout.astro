@@ -6,13 +6,14 @@ interface Props {
   description: string;
   canonical?: string;
   ogImage?: string;
+  ogType?: 'website' | 'article';
   jsonLd?: Record<string, unknown>;
 }
 
-const { title, description, canonical, ogImage, jsonLd } = Astro.props;
+const { title, description, canonical, ogImage, ogType = 'article', jsonLd } = Astro.props;
 ---
 
-<BaseLayout {title} {description} {canonical} {ogImage} {jsonLd}>
+<BaseLayout {title} {description} {canonical} {ogImage} {ogType} {jsonLd}>
   <!--
     Override the narrow 740px centring from BaseLayout — ReviewLayout
     needs the full 1100px grid. We break out of <main> by wrapping here.
