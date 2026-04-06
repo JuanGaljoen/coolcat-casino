@@ -1,0 +1,76 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description,
+  canonical = Astro.url.href,
+  ogImage,
+  jsonLd,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- JSON-LD -->
+    {jsonLd && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+  </head>
+  <body class="bg-white text-gray-900">
+
+    <!-- Nav -->
+    <header class="border-b border-gray-200">
+      <div class="mx-auto max-w-[1100px] px-4 sm:px-6 flex items-center h-14">
+        <a href="/" class="text-lg font-semibold tracking-tight hover:opacity-75 transition-opacity">
+          CoolCat
+        </a>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="mx-auto max-w-[740px] px-4 sm:px-6 py-10">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 mt-16">
+      <div class="mx-auto max-w-[1100px] px-4 sm:px-6 py-8 text-sm text-gray-500">
+        <p>
+          This site contains affiliate links. We may earn a commission at no extra cost to you.
+          Content is intended for adults 18+. Please gamble responsibly.
+        </p>
+        <p class="mt-2">&copy; {new Date().getFullYear()} CoolCat Casino Reviews. All rights reserved.</p>
+      </div>
+    </footer>
+
+  </body>
+</html>

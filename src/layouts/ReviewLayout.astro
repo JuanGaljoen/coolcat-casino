@@ -1,0 +1,44 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown>;
+}
+
+const { title, description, canonical, ogImage, jsonLd } = Astro.props;
+---
+
+<BaseLayout {title} {description} {canonical} {ogImage} {jsonLd}>
+  <!--
+    Override the narrow 740px centring from BaseLayout — ReviewLayout
+    needs the full 1100px grid. We break out of <main> by wrapping here.
+  -->
+  <div class="relative -mx-4 sm:-mx-6">
+    <div class="mx-auto max-w-[1100px] px-4 sm:px-6">
+
+      <!-- Affiliate disclosure -->
+      <div class="mb-6 rounded-md bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">
+        This page contains affiliate links. We may earn a commission at no extra cost to you.
+      </div>
+
+      <!-- Two-column grid -->
+      <div class="flex flex-col lg:flex-row gap-10">
+
+        <!-- Main content — 65% -->
+        <article class="min-w-0 lg:w-[65%]">
+          <slot />
+        </article>
+
+        <!-- Sidebar — 35% -->
+        <aside class="lg:w-[35%] shrink-0">
+          <slot name="sidebar" />
+        </aside>
+
+      </div>
+    </div>
+  </div>
+</BaseLayout>
