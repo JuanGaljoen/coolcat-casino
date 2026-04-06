@@ -9,19 +9,28 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sanity:dev": "cd sanity && sanity dev",
+    "sanity:deploy": "cd sanity && sanity deploy"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/vercel": "^10.0.4",
     "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^5.19.0",
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.3",
     "next-sanity": "^12.2.1",
+    "sanity": "^5.19.0",
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "typescript": "^6.0.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "jsdom": "^25.0.0"
+    }
   }
 }

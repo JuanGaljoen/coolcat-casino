@@ -1,0 +1,22 @@
+{
+  "name": "coolcat-casino-studio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "pnpm": {
+    "overrides": {
+      "jsdom": "^25.0.0"
+    }
+  },
+  "dependencies": {
+    "@sanity/vision": "*",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "sanity": "*",
+    "styled-components": "^6.1.19"
+  }
+}
