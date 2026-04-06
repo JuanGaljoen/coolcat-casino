@@ -1,11 +1,52 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SlotCard from '../components/SlotCard.astro';
+import { getFeaturedSlots } from '../lib/sanity';
+
+const featured = await getFeaturedSlots(6);
 ---
 
 <BaseLayout
-  title="CoolCat Casino — Slot Reviews"
-  description="Expert slot machine reviews with RTP, volatility, and bonus features explained."
+  title="CoolCat — Expert Slot Machine Reviews with Verified RTP"
+  description="Independent slot machine reviews with real RTP data, volatility ratings, and bonus feature analysis. No fluff, just facts."
 >
-  <h1 class="text-3xl font-semibold">Slot Reviews</h1>
-  <p class="mt-4 text-gray-600">Reviews coming soon.</p>
+  <!-- Hero -->
+  <section class="py-10 border-b border-gray-200 mb-10">
+    <h1 class="text-4xl font-semibold leading-tight tracking-tight">
+      Honest Slot Reviews,<br />Verified RTP
+    </h1>
+    <p class="mt-4 text-lg text-gray-500 max-w-prose">
+      Independent analysis of slot machines — real RTP figures, volatility ratings, and bonus mechanics. No sponsorships, no fluff.
+    </p>
+  </section>
+
+  <!-- Top Rated Slots -->
+  <section>
+    <h2 class="text-xl font-semibold mb-6">Top Rated Slots</h2>
+
+    <!-- Break out of the 740px BaseLayout constraint for the grid -->
+    <div class="-mx-4 sm:-mx-6">
+      <div class="mx-auto max-w-[1100px] px-4 sm:px-6">
+        {featured.length > 0 ? (
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featured.map((review) => (
+              <SlotCard review={review} />
+            ))}
+          </div>
+        ) : (
+          <p class="text-gray-500">No featured reviews yet.</p>
+        )}
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <a
+        href="/slots"
+        class="text-sm font-medium hover:underline underline-offset-2"
+        style="color: var(--color-accent);"
+      >
+        View all slot reviews →
+      </a>
+    </div>
+  </section>
 </BaseLayout>
