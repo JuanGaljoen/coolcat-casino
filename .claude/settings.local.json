@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm bin:*)",
+      "Bash(export PATH=\"$PATH:$\\(npm bin -g\\)\")",
+      "Bash(printf 'a\\\\ny\\\\n')",
+      "Bash(pnpm approve-builds:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm astro:*)"
+    ]
+  }
+}
