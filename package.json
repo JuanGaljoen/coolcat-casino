@@ -17,6 +17,7 @@
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/vercel": "^10.0.4",
     "@portabletext/to-html": "^5.0.2",
+    "@portabletext/types": "^4.0.2",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.19.0",
     "@tailwindcss/vite": "^4.2.2",

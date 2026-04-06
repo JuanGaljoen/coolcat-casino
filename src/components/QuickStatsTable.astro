@@ -11,7 +11,7 @@ const { review } = Astro.props;
 const fmt = (value: number) =>
   new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(value);
 
-const rows = [
+const rows: { label: string; value: string }[] = [
   { label: 'RTP',      value: `${review.rtp.toFixed(2)}%` },
   { label: 'Min Bet',  value: fmt(review.minBet) },
   { label: 'Max Bet',  value: fmt(review.maxBet) },
@@ -20,17 +20,23 @@ const rows = [
 ];
 ---
 
-<table class="w-full text-sm border-collapse">
+<table class="w-full text-sm border-collapse" aria-label={`Quick stats for ${review.title}`}>
+  <thead class="sr-only">
+    <tr>
+      <th scope="col">Stat</th>
+      <th scope="col">Value</th>
+    </tr>
+  </thead>
   <tbody>
     <tr class="border-t border-gray-200">
-      <th class="py-2.5 pr-4 text-left font-medium text-gray-500 w-2/5">Volatility</th>
+      <th scope="row" class="py-2.5 pr-4 text-left font-medium text-gray-500 w-2/5">Volatility</th>
       <td class="py-2.5 text-gray-900">
         <VolatilityBadge volatility={review.volatility} />
       </td>
     </tr>
     {rows.map(({ label, value }) => (
       <tr class="border-t border-gray-200">
-        <th class="py-2.5 pr-4 text-left font-medium text-gray-500 w-2/5">{label}</th>
+        <th scope="row" class="py-2.5 pr-4 text-left font-medium text-gray-500 w-2/5">{label}</th>
         <td class="py-2.5 text-gray-900">{value}</td>
       </tr>
     ))}

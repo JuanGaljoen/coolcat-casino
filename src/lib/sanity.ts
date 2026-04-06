@@ -2,10 +2,12 @@ import { createClient } from 'next-sanity';
 import imageUrlBuilder from '@sanity/image-url';
 import type { SlotReview } from '../types';
 
+const SANITY_API_VERSION = '2024-01-01';
+
 export const client = createClient({
   projectId: import.meta.env.SANITY_PROJECT_ID,
   dataset: import.meta.env.SANITY_DATASET ?? 'production',
-  apiVersion: '2024-01-01',
+  apiVersion: SANITY_API_VERSION,
   useCdn: true,
 });
 

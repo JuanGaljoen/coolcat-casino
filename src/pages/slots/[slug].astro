@@ -5,8 +5,8 @@ import ReviewLayout from '../../layouts/ReviewLayout.astro';
 import AffiliateCTA from '../../components/AffiliateCTA.astro';
 import QuickStatsTable from '../../components/QuickStatsTable.astro';
 import RatingStars from '../../components/RatingStars.astro';
-import { getSlugs, getSlotBySlug } from '../../lib/sanity';
-import { urlFor } from '../../lib/sanity';
+import { getSlugs, getSlotBySlug, urlFor } from '../../lib/sanity';
+import { VOLATILITY_LABELS } from '../../types';
 
 export async function getStaticPaths() {
   const slugs = await getSlugs();
@@ -26,20 +26,11 @@ const updatedAt = new Date(review.updatedAt).toLocaleDateString('en-GB', {
   day: 'numeric',
 });
 
-const heroImageUrl = urlFor(review.heroImage.asset).width(1200).height(630).fit('crop').url();
-const ogImageUrl   = urlFor(review.heroImage.asset).width(1200).height(630).fit('crop').url();
+const imageUrl  = urlFor(review.heroImage.asset).width(1200).height(630).fit('crop').url();
+const pageTitle = `${review.title} Review (${year}) — RTP ${review.rtp.toFixed(2)}%, ${VOLATILITY_LABELS[review.volatility]} Volatility | CoolCat`;
+const canonical = new URL(`/slots/${slug}`, Astro.site).href;
 
-const volatilityLabel: Record<string, string> = {
-  low: 'Low',
-  medium: 'Medium',
-  high: 'High',
-  'very-high': 'Very High',
-};
-
-const pageTitle    = `${review.title} Review (${year}) — RTP ${review.rtp.toFixed(2)}%, ${volatilityLabel[review.volatility]} Volatility | CoolCat`;
-const canonicalUrl = new URL(`/slots/${slug}`, Astro.site).href;
-
-const bodyHtml = toHTML(review.body as Parameters<typeof toHTML>[0]);
+const bodyHtml = toHTML(review.body);
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -66,12 +57,10 @@ const jsonLd = {
 <ReviewLayout
   title={pageTitle}
   description={review.verdict}
-  canonical={canonicalUrl}
-  ogImage={ogImageUrl}
+  {canonical}
+  ogImage={imageUrl}
   jsonLd={jsonLd}
 >
-
-  <!-- ── Main content column ── -->
 
   <h1 class="text-3xl font-semibold leading-tight mb-4">
     {review.title} Review ({year})
@@ -82,22 +71,19 @@ const jsonLd = {
     <span class="text-sm text-gray-500">{review.rating.toFixed(1)} / 5</span>
   </div>
 
-  <!-- Hero image -->
   <Image
-    src={heroImageUrl}
+    src={imageUrl}
     alt={review.heroImage.alt ?? review.title}
     width={1200}
     height={630}
     class="w-full rounded-lg mb-6 object-cover"
   />
 
-  <!-- Affiliate CTA (above fold) -->
   <AffiliateCTA affiliateUrl={review.affiliateUrl} slotName={review.title} />
 
   <!-- Pros & Cons -->
   {(review.pros?.length > 0 || review.cons?.length > 0) && (
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8">
-      <!-- Pros -->
       <div class="rounded-lg border border-green-200 bg-green-50 p-4">
         <h2 class="text-sm font-semibold text-green-800 mb-3">Pros</h2>
         <ul class="space-y-2">
@@ -112,7 +98,6 @@ const jsonLd = {
         </ul>
       </div>
 
-      <!-- Cons -->
       <div class="rounded-lg border border-red-200 bg-red-50 p-4">
         <h2 class="text-sm font-semibold text-red-800 mb-3">Cons</h2>
         <ul class="space-y-2">
@@ -130,13 +115,11 @@ const jsonLd = {
     </div>
   )}
 
-  <!-- Portable Text body -->
   <div class="prose prose-gray max-w-none mt-8" set:html={bodyHtml} />
 
-  <!-- Last updated -->
   <p class="mt-8 text-xs text-gray-400">Last updated: {updatedAt}</p>
 
-  <!-- ── Sidebar ── -->
+  <!-- Sidebar -->
   <div slot="sidebar" class="space-y-6 lg:sticky lg:top-6">
     <div>
       <h2 class="text-sm font-semibold text-gray-700 mb-3">Quick Stats</h2>
