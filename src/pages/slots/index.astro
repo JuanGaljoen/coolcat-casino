@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SlotCard from '../../components/SlotCard.astro';
+import { getAllSlots } from '../../lib/sanity';
+
+const slots = await getAllSlots();
+
+const now = new Date();
+const year = now.getFullYear();
+const month = now.toLocaleString('en-GB', { month: 'long' });
+
+const title = `Online Slot Reviews (${year}) — RTP, Ratings & Expert Analysis | CoolCat`;
+const description = `Expert slot machine reviews with verified RTP, volatility ratings and bonus feature breakdowns. Updated ${month} ${year}.`;
+---
+
+<BaseLayout {title} {description}>
+  <div class="space-y-10">
+    <header>
+      <h1 class="text-3xl font-semibold">Slot Machine Reviews</h1>
+      <p class="mt-2 text-gray-500 text-sm">
+        {slots.length} review{slots.length !== 1 ? 's' : ''} — updated {month} {year}
+      </p>
+    </header>
+
+    {slots.length > 0 ? (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {slots.map((slot) => (
+          <SlotCard review={slot} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-gray-500">No reviews published yet. Check back soon.</p>
+    )}
+
+    <!-- ComparisonTable goes here -->
+  </div>
+</BaseLayout>

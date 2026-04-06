@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+import RatingStars from './RatingStars.astro';
+import VolatilityBadge from './VolatilityBadge.astro';
+import { urlFor } from '../lib/sanity';
+import type { SlotReview } from '../types';
+
+interface Props {
+  review: SlotReview;
+}
+
+const { review } = Astro.props;
+
+const imageUrl = urlFor(review.heroImage.asset).width(600).height(340).fit('crop').url();
+---
+
+<article class="flex flex-col rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+  <!-- Hero image -->
+  <a href={`/slots/${review.slug.current}`} tabindex="-1" aria-hidden="true">
+    <Image
+      src={imageUrl}
+      alt={review.heroImage.alt ?? review.title}
+      width={600}
+      height={340}
+      class="w-full object-cover aspect-[16/9]"
+    />
+  </a>
+
+  <!-- Card body -->
+  <div class="flex flex-col flex-1 p-4 gap-3">
+    <!-- Title + provider -->
+    <div>
+      <h2 class="text-base font-semibold leading-snug">
+        <a href={`/slots/${review.slug.current}`} class="hover:underline underline-offset-2">
+          {review.title}
+        </a>
+      </h2>
+      <p class="text-xs text-gray-500 mt-0.5">{review.provider}</p>
+    </div>
+
+    <!-- Rating + volatility -->
+    <div class="flex items-center gap-2 flex-wrap">
+      <RatingStars rating={review.rating} />
+      <VolatilityBadge volatility={review.volatility} />
+    </div>
+
+    <!-- RTP -->
+    <p class="text-sm text-gray-700">
+      RTP: <span class="font-medium">{review.rtp.toFixed(2)}%</span>
+    </p>
+
+    <!-- Verdict -->
+    <p class="text-sm text-gray-600 line-clamp-1 flex-1">{review.verdict}</p>
+
+    <!-- CTA -->
+    <a
+      href={`/slots/${review.slug.current}`}
+      class="mt-auto inline-block text-center text-sm font-medium rounded-md border border-gray-300 px-4 py-2 hover:bg-gray-50 transition-colors"
+    >
+      Read Review
+    </a>
+  </div>
+</article>
