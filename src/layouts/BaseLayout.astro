@@ -70,30 +70,54 @@ const navLinks = [
     </div>
 
     <!-- Nav -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
       <div class="mx-auto max-w-[1100px] px-4 sm:px-6 flex items-center justify-between h-16">
         <!-- Logo -->
-        <a href="/" class="flex items-center gap-2 group" aria-label="CoolCat home">
-          <span class="text-xl font-bold tracking-tight" style="color: var(--color-accent);">CoolCat</span>
-          <span class="text-sm font-normal text-gray-500 hidden sm:inline">Casino Reviews</span>
+        <a href="/" class="flex items-center gap-2.5 group" aria-label="CoolCat home">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <rect width="28" height="28" rx="7" fill="var(--color-accent)"/>
+            <!-- ears -->
+            <polygon points="5,12 5,5 11,9" fill="white" opacity="0.9"/>
+            <polygon points="23,12 23,5 17,9" fill="white" opacity="0.9"/>
+            <!-- face -->
+            <circle cx="14" cy="15" r="7" fill="white" opacity="0.95"/>
+            <!-- eyes -->
+            <ellipse cx="11.5" cy="14" rx="1.2" ry="1.5" fill="var(--color-accent)"/>
+            <ellipse cx="16.5" cy="14" rx="1.2" ry="1.5" fill="var(--color-accent)"/>
+            <!-- nose -->
+            <polygon points="14,16.2 13,17.2 15,17.2" fill="var(--color-accent)" opacity="0.7"/>
+          </svg>
+          <div class="flex flex-col leading-none">
+            <span class="text-[15px] font-bold tracking-tight text-gray-900">CoolCat</span>
+            <span class="text-[11px] font-medium text-gray-400 hidden sm:block mt-0.5">Casino Reviews</span>
+          </div>
         </a>
 
-        <!-- Nav links -->
-        <nav aria-label="Main navigation">
-          <ul class="flex items-center gap-6 text-sm font-medium">
-            {navLinks.map(({ href, label }) => (
-              <li>
-                <a
-                  href={href}
-                  class={`transition-colors hover:text-gray-900 ${currentPath.startsWith(href) ? 'text-gray-900 border-b-2 pb-0.5' : 'text-gray-500'}`}
-                  style={currentPath.startsWith(href) ? 'border-color: var(--color-accent);' : ''}
-                >
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <!-- Nav links + CTA -->
+        <div class="flex items-center gap-6">
+          <nav aria-label="Main navigation">
+            <ul class="flex items-center gap-6 text-sm font-medium">
+              {navLinks.map(({ href, label }) => (
+                <li>
+                  <a
+                    href={href}
+                    class={`transition-colors ${currentPath.startsWith(href) ? 'font-semibold' : 'text-gray-500 hover:text-gray-900'}`}
+                    style={currentPath.startsWith(href) ? 'color: var(--color-accent);' : ''}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <a
+            href="/slots"
+            class="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-white px-4 py-2 rounded-lg transition-opacity hover:opacity-90"
+            style="background: var(--color-accent);"
+          >
+            Top Picks
+          </a>
+        </div>
       </div>
     </header>
 
